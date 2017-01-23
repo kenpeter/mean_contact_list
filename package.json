@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "forever start -a -l forever.log -o out.log -e err.log ./server.js",
+		"stop": "forever stop ./server.js"
   },
   "repository": {
     "type": "git",

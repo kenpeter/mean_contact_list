@@ -14,6 +14,7 @@ npm install
 
 ## Run
 
-* npm start
+npm start, this will start the backend service e.g. http://localhost:8005
+Visit index.html in your browser.
 
 
