@@ -1,0 +1,41 @@
+<!-- row -->
+<div class = "row">
+  <!-- col md 6, contacts --> 
+  <div class="col-md-6">
+    <h2>
+      Contacts
+    </h2>
+  </div>
+  <!-- col-md-3 -->
+  <div class="col-md-3">
+  </div>
+  <!-- col-md-2 -->
+  <div class="col-md-2">
+    <!-- there is a new button -->
+    <!-- #, new, contact, defined in router provider -->
+    <a style="margin-top:20px" class="btn btn-default" href="#/new/contact">New</a>
+  </div>
+  <!-- 1 col -->
+  <div class="col-md-1">
+  </div>
+</div>
+
+<!-- container -->
+<div class="container">
+  <!-- table table hover, hover -->
+  <table class="table table-hover">
+    <tbody> 
+      <!-- ng-repeat -->
+      <!-- contact in contacts $scope -->
+      <!-- | order by last name-->
+      <!-- cursor style -->
+      <tr ng-repeat="contact in contacts | orderBy:'lastName'" style="cursor:pointer">
+        <td>
+          <!-- #/contact/contact._id -->
+          <span>id: {{contact._id}}&nbsp;</span>
+          <a ng-href="#/contact/{{contact._id}}">{{ contact.firstName }} {{ contact.lastName }}</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

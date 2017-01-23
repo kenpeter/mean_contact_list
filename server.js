@@ -1,12 +1,13 @@
-// express
-var express = require("express");
-// path
-var path = require("path");
-// body parser
-var bodyParser = require("body-parser");
+// https://stackoverflow.com/questions/33695893/express-postman-req-body-is-empty
+var express = require('express'),
+    bodyParser = require('body-parser'),
+    app = express();
 
 // mongo db
 var mongodb = require("mongodb");
+
+// cors
+var cors = require('cors');
 
 // obj id
 var ObjectID = mongodb.ObjectID;
@@ -14,30 +15,21 @@ var ObjectID = mongodb.ObjectID;
 // contacts
 var CONTACTS_COLLECTION = "contacts";
 
-// express
-var app = express();
-
-// public, access
-// app use
-// express
-// .static
-// __dirname + "/public"
-app.use(express.static(__dirname + "/public"));
-
-// app use
-// body parser
-// .json()
-app.use(bodyParser.json());
-
-// ===========================
 // https://stackoverflow.com/questions/24330014/bodyparser-is-deprecated-express-4
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.use(bodyParser.json());
+
+app.set('port', (process.env.PORT || 8005));
+
+// https://stackoverflow.com/questions/37465815/node-js-no-access-control-allow-origin-header-is-present-on-the-requested
+// use cors
+app.use(cors()); 
+
 
 var db;
-
 
 // Connect to the database before starting the application server. 
 // mongo db
@@ -62,7 +54,7 @@ mongodb.MongoClient.connect(mongo_uri, function (err, database) {
   console.log("Database connection ready");
 
   // Initialize the app.
-  var server = app.listen(process.env.PORT || 8080, function () {
+  var server = app.listen(process.env.PORT || 8005, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
   });
@@ -84,7 +76,7 @@ function handleError(res, reason, message, code) {
 // app
 // /contacts
 // func
-app.get("/contacts", bodyParser, function(req, res) {
+app.get("/contacts", function(req, res) {
   // db collection
   // contact_table
   // find {}
@@ -247,4 +239,22 @@ app.delete("/contacts/:id", function(req, res) {
       res.status(204).end();
     }
   });
+});
+
+
+
+
+// https://stackoverflow.com/questions/24543847/req-body-empty-on-posts
+app.get('/test', function(req, res) {
+	res.status(200).send("good");
+});
+
+
+// https://stackoverflow.com/questions/24543847/req-body-empty-on-posts
+app.post('/test', function(req, res) {
+    //var Keywords = req.body.Keywords;
+    console.log("Yoooooo");
+    console.log(req.headers);
+    console.log(req.body);
+    res.status(200).send("yay");
 });
