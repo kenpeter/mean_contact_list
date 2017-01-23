@@ -169,7 +169,7 @@ app.get("/contacts/:id", function(req, res) {
       // status
       // 200 means ok
       // .json
-      // doc
+      // doc, we use this data in controller.
       res.status(200).json(doc);  
     }
   });

@@ -14,24 +14,50 @@
   
   <!-- col-2 -->
   <div class="col-md-2">
+    <!-- #/ -->
+    <!-- delete button -->
+    <!-- ng-click, deleteContact(contact._id) -->
     <a href="#/"><button style="margin-top:20px" class="btn btn-default" ng-click="deleteContact(contact._id)">Delete</button></a>
   </div>
+  
+  <!-- col-1 -->
   <div class="col-md-1">
   </div>
 </div>
+
+<!-- edit mode, true, then hide -->
+<!-- class container -->
 <div ng-hide="editMode" class="container">
   <div>
+    <!-- ng-if, contact email -->
+    <!-- ng-href, mailto -->
+    <!-- contact email -->
     <p ng-if="contact.email">email: <a ng-href="mailto:{{ contact.email }}" target="_blank">{{ contact.email }}</a></p>
+    
+    <!-- ng-if, contact, phone, mobile, then display -->
     <p ng-if="contact.phone.mobile">phone (m): {{ contact.phone.mobile }} </p>
+    
+    <!-- phone work -->
     <p ng-if="contact.phone.work">phone (w): {{ contact.phone.work }} </p>
+    
+    <!-- contact address -->
     <p ng-if="contact.address"> address: {{ contact.address }} </p>
+    
+    <!-- contact twitter -->
     <p ng-if="contact.twitter"> twitter: <a ng-href="https://twitter.com/{{ contact.twitter }}" target="_blank">@{{ contact.twitter }}</a></p>
+    
     <p>
+      <!-- btn btn-default, ng-click -->
+      <!-- ng-click, toggle edit -->
       <button style="margin-top:20px" class="btn btn-default" ng-click="toggleEdit()">Edit</button>
+      
+      <!-- back to home -->
       <a style="margin-top:20px" class="btn btn-default" href="#/">Back</a>
     </p>
   </div>
 </div>
+
+<!-- ng-lincude, what is this? contactFormURL which is contact-form.html -->
 <!-- Contact form -->
 <div ng-include="contactFormUrl">
 </div>

@@ -1,3 +1,4 @@
+// Hak
 var backend_server = "http://mean_contact_list_back.local";
 
 // angular
@@ -20,6 +21,10 @@ angular.module("contactsApp", ['ngRoute'])
         templateUrl: "list.html",
         controller: "ListController",
         resolve: {
+          // http://odetocode.com/blogs/scott/archive/2014/05/20/using-resolve-in-angularjs-routes.aspx
+          // resolve it is also a promise, just guarantee finished.
+          // We can have multiple async funcs here, they all be resolved before passing to controller.
+        
           // so it assign http response to {contacts: contacts}
           // contacts
           // func
@@ -32,7 +37,11 @@ angular.module("contactsApp", ['ngRoute'])
           }
         }
       })
+      
+      
       .when("/new/contact", {
+        // NOTE: have no resolves
+      
         // when doing routeProvider
         // we don't put #, just /new/contact
         // contoller, see below
@@ -41,14 +50,23 @@ angular.module("contactsApp", ['ngRoute'])
         // xxx.html
         templateUrl: "contact-form.html"
       })
+      
+      
       .when("/contact/:contactId", {
+        // contact/id
+        // controller: edit contact controler
         controller: "EditContactController",
+        // template contact.html
         templateUrl: "contact.html"
       })
+      
+      
       .otherwise({
         redirectTo: "/"
       })
   })
+  
+  
   .service("Contacts", function($http) {
     // service
     // this
@@ -90,9 +108,66 @@ angular.module("contactsApp", ['ngRoute'])
           alert("Error creating contact.");
         });
     }
+    
+
+    // this
+    // getContact
+    // func
+    // contact id, someone pass    
+    this.getContact = function(contactId) {
+      // url
+      // contacts/id
+      var url = backend_server + "/contacts/" + contactId;
+      return $http.get(url)
+        .then(function(response) {
+          return response;
+        }, function(response) {
+          alert("Error finding this contact.");
+        });
+    }
+    
+    
+    this.editContact = function(contact) {
+      // var url
+      // contacts/id
+      var url = backend_server + "/contacts/" + contact._id;
       
+      // console id
+      console.log(contact._id);
+      
+      // actually put
+      return $http.put(url, contact)
+        // then
+        .then(function(response) {
+          // res
+          return response;
+        }, function(response) {
+          // alert
+          alert("Error editing this contact.");
+          console.log(response);
+      });
+    }
+    
+    
+    this.deleteContact = function(contactId) {
+      var url = backend_server + "/contacts/" + contactId;
+        // actually http delete
+        return $http.delete(url)
+          .then(function(response) {
+            return response;
+          }, function(response) {
+            alert("Error deleting this contact.");
+            console.log(response);
+        });
+    }  
+    
+    
   })
+  
+  
   .controller("ListController", function(contacts, $scope) {
+    // contacts is the ================ resolve
+  
     // list controller
     // func
     // contact
@@ -115,7 +190,11 @@ angular.module("contactsApp", ['ngRoute'])
     
     //console.log($scope.contacts[0]);
   })
+  
+  
   .controller("NewContactController", function($scope, $location, Contacts) {
+    // Only Contacts is available
+    
     // new contact cotroller
     // $scope
     // $location
@@ -155,7 +234,75 @@ angular.module("contactsApp", ['ngRoute'])
     }
     
   })
-  .controller("EditContactController", function($scope, $routeParams, Contacts) {
+  
+  
+  .controller("EditContactController", function($scope, $route, $routeParams, $location, Contacts) {
+    // Only Contacts is available
+  
+    // Contacts is service
+    // getContact .................
+    // $route params
+    // contact id
+    // then
+    // func doc
+    Contacts.getContact($routeParams.contactId).then(function(doc) {
+      // attach contact to $scope
+      // doc
+      // .data
+      // and it attach some data to $scope, so incase we need to use it in ng model.
+      $scope.contact = doc.data;
+    }, function(response) {
+      alert(response);
+    });
+
+    // that is why is called toggle edit...
+    // NOTE: clic, the edit button........
+    // $scope
+    // toggle edit
+    // == func
+    $scope.toggleEdit = function() {
+      // $scope
+      // edit mode = true
+      // display contact info.............
+      $scope.editMode = true;
+      
+      // $scope
+      // contact form url
+      // is the actual contact form html..............
+      // include the form, to allow edit...
+      $scope.contactFormUrl = "contact-form.html";
+    }
+
+    // $scope
+    // back
+    // === func
+    // $scope
+    // edit mode = false
+    // $scope
+    $scope.back = function() {
+      // edit mode false, display contact info
+      $scope.editMode = false;
+      // include nothing
+      $scope.contactFormUrl = "";
+    }
+
+    // $scope
+    // save contact
+    $scope.saveContact = function(contact) {
+      // actually save edit contact
+      Contacts.editContact(contact);
+      
+      // edit mode false, display contact info
+      $scope.editMode = false;
+      $scope.contactFormUrl = "";
+    }
+
+    // delete
+    $scope.deleteContact = function(contactId) {
+      Contacts.deleteContact(contactId);
+      
+      $location.path("#/");
+    }
     
   })
   
