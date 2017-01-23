@@ -33,10 +33,18 @@ angular.module("contactsApp", ['ngRoute'])
           // func
           // contacts
           contacts: function(Contacts) {
+          
+            var res = Contacts.getContacts();
+          
+            //test
+            // It seems promise never get an item deleted until a page refresh.
+            console.log("-- router calls resolve --");
+            console.log(res);
+          
             // return call service
             // Contacts service has many func
             // getContacts.
-            return Contacts.getContacts();
+            return res;
           }
         }
       })
@@ -81,8 +89,8 @@ angular.module("contactsApp", ['ngRoute'])
       return $http.get(backend_server + "/contacts").
         then(function(response) {
         
-          //console.log("===test===???");
-          //console.log(response);
+          console.log("-- inside this.getContacts --");
+          console.log(response);
           
           // return response
           return response;
@@ -189,9 +197,17 @@ angular.module("contactsApp", ['ngRoute'])
     // this means function(contacts, $scope), contacts is from "resolve"
     // attach $scope.contacts ====
     // .data
-    $scope.contacts = contacts.data;
+    
+    // Here is how we store data........
+    // once attach, it is forever there.
+    // This becomes a child scope, after creating an item, then back to home page.
+    $scope.contacts = contacts.data; 
     
     //console.log($scope.contacts[0]);
+    
+    //test
+    console.log("-- inside list controller --");
+    console.log($scope);
   })
   
   
@@ -305,8 +321,8 @@ angular.module("contactsApp", ['ngRoute'])
       Contacts.deleteContact(contactId).then(function(data){
       
         //test
-        console.log("--test--");
-        console.log(data);
+        console.log("-- after delete --");
+        console.log($scope);
       
         // Bug....
         // I want to go back to home page to list all items
