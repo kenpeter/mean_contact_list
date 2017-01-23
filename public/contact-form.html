@@ -1,5 +1,8 @@
 <!-- ng-hide, hide the contact id -->
+<!-- if contact._id exists, true, then hide -->
+<!-- else contact._id not there, show -->
 <div class="row" ng-hide="contact._id">
+  <!-- col-6, but why?? -->
   <div class="col-md-6">
       <h2>Create new contact</h2>
   </div>
@@ -7,34 +10,52 @@
 <div class="container">
   <div>
     <p>
+      <!-- contact.firstname -->
       <label>First Name (required)</label> 
       <input id="name" class="form-control" type="text" ng-model="contact.firstName" required> 
     </p>
+    
     <p>
+      <!-- contact.lastname -->
       <label>Last Name (required)</label> 
       <input id="name" class="form-control" type="text" ng-model="contact.lastName" required> 
     </p>
+    
     <p>
+      <!-- form-control -->
+      <!-- contact.email -->
       <label>Email (required)</label> 
       <input id="name" class="form-control" type="text" ng-model="contact.email" required> 
     </p>
+    
     <p>
+      <!-- contact.phone.mobile -->
       <label>Phone (Mobile)</label> 
       <input id="name" class="form-control" type="text" ng-model="contact.phone.mobile"> 
     </p>
+    
     <p>
+      <!-- contact.phone.work -->
       <label>Phone (Work)</label> 
       <input id="name" class="form-control" type="text" ng-model="contact.phone.work"> 
     </p>
+    
     <p>
+      <!-- contact address-->
       <label>Address</label> 
       <input id="name" class="form-control" type="text" ng-model="contact.address"> 
     </p>
+    
     <p>
-      <label>Twitter Handle</label> 
+      <!-- contact.twitter -->  
+      <label>Twitter</label> 
       <input id="name" class="form-control" type="text" ng-model="contact.twitter"> 
     </p>
+    
     <p>
+      <!-- btn btn-defualt -->
+      <!-- ng-click used func defined in controller -->
+      <!-- func in controller use func defined in service -->
       <button style="margin-top:20px" class="btn btn-default" ng-click="saveContact(contact)">Save</button>
       <button style="margin-top:20px" class="btn btn-default" ng-click="back()">Back</button>
     </p>

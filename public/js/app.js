@@ -1,3 +1,5 @@
+var backend_server = "http://mean_contact_list_back.local";
+
 // angular
 // module
 // contact app
@@ -55,7 +57,7 @@ angular.module("contactsApp", ['ngRoute'])
       // return
       // $http
       // access the api
-      return $http.get("http://mean_contact_list_back.local/contacts").
+      return $http.get(backend_server + "/contacts").
         then(function(response) {
         
           //console.log("===test===???");
@@ -77,7 +79,7 @@ angular.module("contactsApp", ['ngRoute'])
       // post
       // /contacts
       // post he ng-model, contact
-      return $http.post("/contacts", contact)
+      return $http.post(backend_server + "/contacts", contact)
         // .then
         // response
         .then(function(response) {
@@ -140,12 +142,17 @@ angular.module("contactsApp", ['ngRoute'])
       // createContact is a func of service
       // then
       Contacts.createContact(contact).then(function(doc) {
+        // what is doc????????
+        // document in colleciton
+        // /contact/243242343434
         var contactUrl = "/contact/" + doc.data._id;
+        // $locaiton.path, go to that contact id
         $location.path(contactUrl);
       }, function(response) {
+        // error
         alert(response);
-            });
-        }
+      });
+    }
     
   })
   .controller("EditContactController", function($scope, $routeParams, Contacts) {
