@@ -299,9 +299,19 @@ angular.module("contactsApp", ['ngRoute'])
 
     // delete
     $scope.deleteContact = function(contactId) {
-      Contacts.deleteContact(contactId);
+      Contacts.deleteContact(contactId).then(function(data){
       
-      $location.path("#/");
+        //test
+        console.log("--test--");
+        console.log(data);
+      
+        // Bug....
+        // I want to go back to home page to list all items
+        // but I still see the item, even though I delete it.
+        // I need to refresh the entire page....
+        $location.path("/");
+      });
+      
     }
     
   })
