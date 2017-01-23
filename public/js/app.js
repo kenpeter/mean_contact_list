@@ -1,5 +1,8 @@
 // Hak
-var backend_server = "http://mean_contact_list_back.local";
+//var backend_server = "http://mean_contact_list_back.local";
+
+
+var backend_server = CONFIG.backend_server;
 
 // angular
 // module
