@@ -31,7 +31,12 @@ angular.module("contactsApp", ['ngRoute'])
         }
       })
       .when("/new/contact", {
+        // when doing routeProvider
+        // we don't put #, just /new/contact
+        // contoller, see below
         controller: "NewContactController",
+        // template url
+        // xxx.html
         templateUrl: "contact-form.html"
       })
       .when("/contact/:contactId", {
@@ -61,8 +66,28 @@ angular.module("contactsApp", ['ngRoute'])
         }, function(response) {
           alert("Error finding contacts.");
         });
-      }
-      
+    }
+    
+    // this is the service
+    // createContact is a newly created func
+    // func(contact), contact expects ng-model from input, etc  
+    this.createContact = function(contact) {
+      // return
+      // $http
+      // post
+      // /contacts
+      // post he ng-model, contact
+      return $http.post("/contacts", contact)
+        // .then
+        // response
+        .then(function(response) {
+          // return response
+          return response;
+        }, function(response) {
+          // alert
+          alert("Error creating contact.");
+        });
+    }
       
   })
   .controller("ListController", function(contacts, $scope) {
@@ -97,12 +122,30 @@ angular.module("contactsApp", ['ngRoute'])
     // $scope
     // .back
     // func
+    // ng-click="back()", used in contact-form.html
+    // so we append func to $scope, then use in template
     $scope.back = function() {
       // $location
       // #/
       $location.path("#/");
     }
     
+    // in contact-form.html
+    // ng-click="saveContact(contact)"
+    // there are many fields in contact-form.html
+    // e.g. ng-model="contact.firstName",
+    // so contact is from the ng-model, pass into createContact
+    $scope.saveContact = function(contact) {
+      // Contacts is service
+      // createContact is a func of service
+      // then
+      Contacts.createContact(contact).then(function(doc) {
+        var contactUrl = "/contact/" + doc.data._id;
+        $location.path(contactUrl);
+      }, function(response) {
+        alert(response);
+            });
+        }
     
   })
   .controller("EditContactController", function($scope, $routeParams, Contacts) {
